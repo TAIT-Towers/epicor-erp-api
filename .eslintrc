@@ -1,0 +1,7 @@
+{
+  "extends": "f1",
+  "rules": {
+    "no-trailing-spaces": "off",
+    "eol-last": "off"
+  }
+}
