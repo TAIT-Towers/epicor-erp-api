@@ -3,7 +3,7 @@
 const connection = require('./sample-connection')
 
 const sampleCustomer = {
-  CustID: '555',
+  CustID: '556',
   Name: 'Customer Test Five'
 }
 
