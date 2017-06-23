@@ -7,7 +7,7 @@ const sampleCustomer = {
   Name: 'Customer Test Five'
 }
 
-connection.createCustomer(sampleCustomer)
+connection.Customer.create(sampleCustomer)
   .then(result => {
     console.log('Customer created with id', result)
   })
