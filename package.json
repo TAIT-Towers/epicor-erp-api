@@ -7,6 +7,10 @@
     "lint": "eslint --ext .js .",
     "test": "mocha --harmony tests/**/*.spec.js -r ./tests/setup.js --recursive"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicocrm/epicor-erp-api"
+  },
   "keywords": [
     "epicor"
   ],
