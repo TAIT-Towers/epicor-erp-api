@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --harmony tests/**/*.spec.js -r ./tests/setup.js --recursive"
   },
   "keywords": [
     "epicor"
@@ -13,9 +13,14 @@
   "author": "Nicolas Galler",
   "license": "ISC",
   "devDependencies": {
+    "babel-register": "^6.24.1",
+    "chai": "^4.0.2",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
-    "eslint-config-f1": "^1.0.1"
+    "eslint-config-f1": "^1.0.1",
+    "mocha": "^3.4.2",
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0"
   },
   "dependencies": {
     "request": "^2.81.0",
