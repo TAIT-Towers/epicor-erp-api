@@ -17,7 +17,6 @@
   "author": "Nicolas Galler",
   "license": "ISC",
   "devDependencies": {
-    "babel-register": "^6.24.1",
     "chai": "^4.0.2",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
