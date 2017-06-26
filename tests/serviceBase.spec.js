@@ -132,5 +132,21 @@ describe('ServiceBase', () => {
         done()
       })
     })
+
+    it('limits number of retrieved records', (done) => {
+      connection.makeRequest = () => Promise.resolve({
+        parameters: {morePage: true},
+        returnObj: { Property: [{
+          id: 1
+        }, {
+          id: 2
+        }] }
+      })
+      const result = service.find('', {limit: 1})
+      result.on('data', rec => {
+        rec.id.should.equal(1)
+      })
+      result.on('end', done)
+    })
   })
 })
