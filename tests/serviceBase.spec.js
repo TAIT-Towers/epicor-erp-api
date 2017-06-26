@@ -1,22 +1,24 @@
 const Connection = require('../lib/connection')
+const ServiceBase = require('../lib/serviceBase')
 
-describe('connection', () => {
+describe('ServiceBase', () => {
   describe('find', () => {
-    let connection
+    let connection, service
 
     beforeEach(() => {
       connection = new Connection({
         serverUrl: 'https://nowhere.com'
       })
+      service = new ServiceBase(connection, 'SomeService', 'Property')
     })
 
     it('returns an object with on property', () => {
-      const result = connection.find('Nothing', 'Property')
+      const result = service.find()
       result.should.have.property('on').that.is.a('function')
     })
 
     it('emits error event when there is an error', (done) => {
-      const result = connection.find('Nothing', 'Property')
+      const result = service.find()
       // need a data handler to start the stream flowing
       result.on('data', () => {
         done('there should be no data')
@@ -29,7 +31,7 @@ describe('connection', () => {
         parameters: {},
         returnObj: { someotherproperty: [] }
       })
-      const result = connection.find('Nothing', 'Property')
+      const result = service.find()
       result.on('data', () => {
         done('there should be no data')
       })
@@ -41,7 +43,7 @@ describe('connection', () => {
         parameters: {},
         returnObj: { Property: [] }
       })
-      const result = connection.find('Nothing', 'Property')
+      const result = service.find()
       result.on('data', () => {
         done('there should be no data')
       })
@@ -55,7 +57,7 @@ describe('connection', () => {
           id: 1
         }] }
       })
-      const result = connection.find('Nothing', 'Property')
+      const result = service.find()
       result.on('data', rec => {
         rec.id.should.equal(1)
       })
@@ -73,8 +75,8 @@ describe('connection', () => {
           returnObj: { Property: [{id: 2}] }
         }))
       let data = []
-      connection.makeRequest = fakeRequest
-      const result = connection.find('Nothing', 'Property')
+      service.makeRequest = fakeRequest
+      const result = service.find()
       result.on('data', rec => {
         data.push(rec)
       })
@@ -83,6 +85,8 @@ describe('connection', () => {
           {id: 1},
           {id: 2}
         ])
+        expect(fakeRequest).to.have.been.calledWith('GetList', sinon.match({absolutePage: 0}))
+        expect(fakeRequest).to.have.been.calledWith('GetList', sinon.match({absolutePage: 1}))
         done()
       })
     })
@@ -101,13 +105,30 @@ describe('connection', () => {
       }
       let data = []
       connection.makeRequest = fakeRequest
-      const result = connection.find('Nothing', 'Property')
+      const result = service.find()
       result.on('data', rec => data.push(rec))
       result.on('end', () => {
         data.should.have.length(20 * 25)
         for(let i = 0; i < 20 * 25; i++) {
           data[i].should.eql({id: i})
         }
+        done()
+      })
+    })
+
+    it('calls GetList with where clause', (done) => {
+      service.makeRequest = sinon.stub().returns(Promise.resolve({
+        parameters: {},
+        returnObj: { Property: [] }
+      }))
+      const result = service.find('MyWhereClause', {pageSize: 30})
+      result.on('data', () => {
+        done('there should be no data')
+      })
+      result.on('end', () => {
+        expect(service.makeRequest).to.have.been.calledWith('GetList', {
+          whereClause: 'MyWhereClause', pageSize: 30, absolutePage: 0
+        })
         done()
       })
     })
