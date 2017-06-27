@@ -80,4 +80,42 @@ describe('Customer Service', () => {
       })
     })
   })
+
+  describe('get', () => {
+    it('passes custNum and return resulting customer', () => {
+      const r = sinon.stub()
+        .returns(Promise.resolve({
+          returnObj: {
+            Customer: [{Something: '123', SysRevID: 555}]
+          }
+        }))
+      connection.makeRequest = r
+      return customerSvc.get(555).then(result => {
+        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'GetByID', {custNum: 555})
+        expect(result).to.eql({Something: '123', SysRevID: 555})
+      })
+    })
+
+    it('returns null when not found', () => {
+      const r = sinon.stub()
+        .returns(Promise.reject({
+          statusCode: 404
+        }))
+      connection.makeRequest = r
+      return customerSvc.get(555).then(result => {
+        expect(result).to.equal(null)
+      })
+    })
+
+    it('passer errors for other errors', () => {
+      const r = sinon.stub()
+        .returns(Promise.reject({
+          statusCode: 500
+        }))
+      connection.makeRequest = r
+      return customerSvc.get(555).then(() => expect.fail('should not succeed'), err => {
+        expect(err).to.eql({statusCode: 500})
+      })
+    })
+  })
 })

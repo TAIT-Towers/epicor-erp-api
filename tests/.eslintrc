@@ -5,5 +5,8 @@
   "globals": {
     "expect": true,
     "sinon": true
+  },
+  "rules": {
+    "prefer-promise-reject-errors": 0
   }
 }
