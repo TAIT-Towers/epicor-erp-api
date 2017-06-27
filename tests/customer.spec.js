@@ -41,8 +41,8 @@ describe('Customer Service', () => {
           }
         }))
       connection.makeRequest = r
-      customerSvc.create({}).then(custNum => {
-        expect(custNum).to.equal(123)
+      customerSvc.create({}).then(({CustNum}) => {
+        expect(CustNum).to.equal(123)
         expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'GetCustomerTerritory', sinon.match.object)
         expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', sinon.match.object)
         done()
@@ -51,43 +51,22 @@ describe('Customer Service', () => {
   })
 
   describe('update', () => {
-    it('calls Get and Update, passing props retrieved from Get, without passing SysRevID', () => {
+    it('calls Update, without passing SysRevID', () => {
       const r = sinon.stub()
-        .returns(Promise.resolve())
+        .returns(Promise.resolve({
+          parameters: {
+            ds: {
+              Customer: [{Something: '123', SysRevID: 555}]
+            }
+          }
+        }))
       connection.makeRequest = r
-      customerSvc.get = () => Promise.resolve({
-        Name: 'Test', SysRevID: 55
-      })
-      return customerSvc.update({Something: '123', SysRevID: 123}).then(() => {
+      return customerSvc.update({Something: '123', SysRevID: 123}).then(result => {
         expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', {
-          Name: 'Test', Something: '123', RowMod: 'U'
+          Something: '123', RowMod: 'U'
         })
+        expect(result).to.eql({Something: '123', SysRevID: 555})
       })
-    })
-
-    it('processes update if SysRevID is equal', () => {
-      const r = sinon.stub()
-        .returns(Promise.resolve())
-      connection.makeRequest = r
-      customerSvc.get = () => Promise.resolve({
-        Name: 'Test', SysRevID: 123
-      })
-      return customerSvc.update({Something: '123', SysRevID: 123}, {checkRevId: true}).then(() => {
-        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', {
-          Name: 'Test', Something: '123', RowMod: 'U'
-        })
-      })
-    })
-
-    it('throws error if SysRevID is more recent', () => {
-      const r = sinon.stub()
-        .returns(Promise.resolve())
-      connection.makeRequest = r
-      customerSvc.get = () => Promise.resolve({
-        Name: 'Test', SysRevID: 123
-      })
-      return customerSvc.update({Something: '123', SysRevID: 55}, {checkRevId: true})
-        .then(() => Promise.reject(new Error('Should not process update')), () => null)
     })
   })
 })

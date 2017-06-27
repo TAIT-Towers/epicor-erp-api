@@ -41,7 +41,7 @@ describe('ServiceBase', () => {
     it('emits end event if there is no data', (done) => {
       connection.makeRequest = () => Promise.resolve({
         parameters: {},
-        returnObj: { Property: [] }
+        returnObj: { PropertyList: [] }
       })
       const result = service.find()
       result.on('data', () => {
@@ -53,7 +53,7 @@ describe('ServiceBase', () => {
     it('emits data events for retrieved records', (done) => {
       connection.makeRequest = () => Promise.resolve({
         parameters: {},
-        returnObj: { Property: [{
+        returnObj: { PropertyList: [{
           id: 1
         }] }
       })
@@ -68,11 +68,11 @@ describe('ServiceBase', () => {
       const fakeRequest = sinon.stub()
         .onFirstCall().returns(Promise.resolve({
           parameters: { morePage: true },
-          returnObj: { Property: [{id: 1}] }
+          returnObj: { PropertyList: [{id: 1}] }
         }))
         .onSecondCall().returns(Promise.resolve({
           parameters: { morePage: false },
-          returnObj: { Property: [{id: 2}] }
+          returnObj: { PropertyList: [{id: 2}] }
         }))
       let data = []
       service.makeRequest = fakeRequest
@@ -100,7 +100,7 @@ describe('ServiceBase', () => {
         }
         fakeRequest.onCall(j).returns(Promise.resolve({
           parameters: {morePage: j !== 19},
-          returnObj: { Property: page }
+          returnObj: { PropertyList: page }
         }))
       }
       let data = []
@@ -119,7 +119,7 @@ describe('ServiceBase', () => {
     it('calls GetList with where clause', (done) => {
       service.makeRequest = sinon.stub().returns(Promise.resolve({
         parameters: {},
-        returnObj: { Property: [] }
+        returnObj: { PropertyList: [] }
       }))
       const result = service.find('MyWhereClause', {pageSize: 30})
       result.on('data', () => {
@@ -136,7 +136,7 @@ describe('ServiceBase', () => {
     it('limits number of retrieved records', (done) => {
       connection.makeRequest = () => Promise.resolve({
         parameters: {morePage: true},
-        returnObj: { Property: [{
+        returnObj: { PropertyList: [{
           id: 1
         }, {
           id: 2

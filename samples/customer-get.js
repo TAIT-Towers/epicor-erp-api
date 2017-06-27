@@ -2,7 +2,7 @@
 
 const connection = require('./sample-connection')
 
-connection.Customer.get(7)
+connection.Customer.get({CustNum: 7})
   .then(result => {
     console.log('got customer', result)
   })
