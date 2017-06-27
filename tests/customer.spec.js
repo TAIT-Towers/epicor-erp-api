@@ -21,17 +21,27 @@ describe('Customer Service', () => {
       })
     })
 
-    it('calls GetCustomerTerritory and Update', (done) => {
+    it('calls GetCustomerTerritory and Update', () => {
       const r = sinon.stub()
         .onFirstCall().returns(Promise.resolve({
           parameters: {
             ds: {
               Customer: [{
+                Territory: 'DEF'
               }]
             }
           }
         }))
         .onSecondCall().returns(Promise.resolve({
+          parameters: {
+            ds: {
+              Customer: [{
+                SomethingElse: 'xxx'
+              }]
+            }
+          }
+        }))
+        .onThirdCall().returns(Promise.resolve({
           parameters: {
             ds: {
               Customer: [{
@@ -41,11 +51,12 @@ describe('Customer Service', () => {
           }
         }))
       connection.makeRequest = r
-      customerSvc.create({}).then(({CustNum}) => {
+      return customerSvc.create({}).then(({CustNum}) => {
         expect(CustNum).to.equal(123)
         expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'GetCustomerTerritory', sinon.match.object)
-        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', sinon.match.object)
-        done()
+        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'GetNewCustomer', sinon.match.object)
+        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update',
+          sinon.match({ds: {Customer: [sinon.match({Territory: 'DEF', SomethingElse: 'xxx'})]}}))
       })
     })
   })
@@ -62,9 +73,9 @@ describe('Customer Service', () => {
         }))
       connection.makeRequest = r
       return customerSvc.update({Something: '123', SysRevID: 123}).then(result => {
-        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', {
+        expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', {ds: {Customer: [{
           Something: '123', RowMod: 'U'
-        })
+        }]}})
         expect(result).to.eql({Something: '123', SysRevID: 555})
       })
     })
