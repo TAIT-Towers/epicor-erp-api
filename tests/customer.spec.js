@@ -90,7 +90,7 @@ describe('Customer Service', () => {
           }
         }))
       connection.makeRequest = r
-      return customerSvc.get(555).then(result => {
+      return customerSvc.get({CustNum: 555}).then(result => {
         expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'GetByID', {custNum: 555})
         expect(result).to.eql({Something: '123', SysRevID: 555})
       })
