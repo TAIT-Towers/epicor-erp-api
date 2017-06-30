@@ -118,4 +118,11 @@ describe('Customer Service', () => {
       })
     })
   })
+
+  describe('GetRevId', () => {
+    it('returns SysRevID field', () => {
+      const r = customerSvc.getRevId({SysRevID: 555})
+      expect(r).to.equal(555)
+    })
+  })
 })
