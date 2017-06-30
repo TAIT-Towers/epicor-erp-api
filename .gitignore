@@ -1,6 +1,3 @@
-# Don't need the js files from this folder
-/*.js
-
 # Logs
 logs
 *.log
