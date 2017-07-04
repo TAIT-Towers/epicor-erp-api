@@ -26,6 +26,7 @@
     "sinon-chai": "^2.11.0"
   },
   "dependencies": {
+    "debug": "^2.6.8",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
   }
