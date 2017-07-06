@@ -125,4 +125,21 @@ describe('Customer Service', () => {
       expect(r).to.equal(555)
     })
   })
+
+  describe('find', () => {
+    it('calls GetRows', (done) => {
+      const r = sinon.stub()
+        .returns(new Promise(function() {}))
+      customerSvc.makeRequest = r
+      const result = customerSvc.find('testing')
+      expect(result).to.have.property('on')
+      result.on('data', () => {
+        throw new Error('there should be no data')
+      })
+      setImmediate(() => {
+        expect(r).to.have.been.calledWith('GetRows', sinon.match({whereClauseCustomer: 'testing', pageSize: 25, absolutePage: 0}))
+        done()
+      })
+    })
+  })
 })
