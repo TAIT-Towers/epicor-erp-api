@@ -11,10 +11,11 @@ function Epicor({serverUrl, username, password, company, strictSSL}, serviceAdap
   const connection = new Connection({serverUrl, username, password, company, strictSSL})
 
   this.getConnection = () => connection
-  this.Customer = serviceAdapter(new Customer(connection))
   this.Currency = serviceAdapter(new Currency(connection))
-  this.Supplier = serviceAdapter(new Supplier(connection))
+  this.Customer = serviceAdapter(new Customer(connection))
   this.SalesTerritory = serviceAdapter(new SalesTerritory(connection))
+  this.ShipVia = serviceAdapter(new ServiceBase(connection, 'Erp.BO.ShipViaSvc', 'ShipVia', 'ShipViaCode'))
+  this.Supplier = serviceAdapter(new Supplier(connection))
   this.Terms = serviceAdapter(new ServiceBase(connection, 'Erp.BO.TermsSvc', 'Terms', 'TermsCode'))
 }
 
