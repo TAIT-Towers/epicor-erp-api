@@ -133,6 +133,34 @@ describe('ServiceBase', () => {
       })
     })
 
+    it('processes multiple data tables in dataset', (done) => {
+      service.makeRequest = sinon.stub().returns(Promise.resolve({
+        parameters: {},
+        returnObj: {
+          PropertyList: [
+            { Company: 150, ParentId: '1' },
+            { Company: 150, ParentId: '2' },
+          ],
+          Children: [
+            { Company: 150, ChildId: '2', ParentId: '2' }
+          ]
+        }
+      }))
+      const records = []
+      const result = service.find('MyWhereClause', {pageSize: 30})
+      result.on('data', r => records.push(r))
+      result.on('end', () => {
+        records.should.have.length(2)
+        records.should.eql([
+          { Company: 150, ParentId: '1' },
+          { Company: 150, ParentId: '2', Children: [{
+            Company: 150, ChildId: '2', ParentId: '2'
+          }]}
+        ])
+        done()
+      })
+    })
+
     it('limits number of retrieved records', (done) => {
       connection.makeRequest = () => Promise.resolve({
         parameters: {morePage: true},

@@ -1,11 +1,11 @@
 {
   "name": "epicor-erp-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js .",
-    "test": "mocha --harmony tests/**/*.spec.js -r ./tests/setup.js --recursive"
+    "test": "mocha --harmony tests -r ./tests/setup.js --recursive"
   },
   "repository": {
     "type": "git",
