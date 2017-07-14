@@ -8,18 +8,19 @@ const Customer = require('./lib/customer'),
 
 const identity = x => x
 
-function Epicor({serverUrl, username, password, company, strictSSL}, serviceAdapter = identity) {
+function Epicor({serverUrl, username, password, company, strictSSL}) {
   const connection = new Connection({serverUrl, username, password, company, strictSSL})
 
   this.getConnection = () => connection
-  this.Currency = serviceAdapter(new Currency(connection))
-  this.Customer = serviceAdapter(new Customer(connection))
-  this.PerCon = serviceAdapter(new ServiceBase(connection, 'Erp.BO.PerConSvc', 'PerCon', 'PerConID'))
-  this.SalesTerritory = serviceAdapter(new SalesTerritory(connection))
-  this.ShipVia = serviceAdapter(new ServiceBase(connection, 'Erp.BO.ShipViaSvc', 'ShipVia', 'ShipViaCode'))
-  this.Supplier = serviceAdapter(new Supplier(connection))
-  this.Terms = serviceAdapter(new ServiceBase(connection, 'Erp.BO.TermsSvc', 'Terms', 'TermsCode'))
-  this.Employee = serviceAdapter(new Employee(connection))
+  this.Currency = new Currency(connection)
+  this.Customer = new Customer(connection)
+  this.PerCon = new ServiceBase(connection, 'Erp.BO.PerConSvc', 'PerCon', 'PerConID')
+  this.ResourceGroup = new ServiceBase(connection, 'Erp.BO.ResourceGroupSvc', 'ResourceGroup', 'ResourceGrpID')
+  this.SalesTerritory = new SalesTerritory(connection)
+  this.ShipVia = new ServiceBase(connection, 'Erp.BO.ShipViaSvc', 'ShipVia', 'ShipViaCode')
+  this.Supplier = new Supplier(connection)
+  this.Terms = new ServiceBase(connection, 'Erp.BO.TermsSvc', 'Terms', 'TermsCode')
+  this.Employee = new Employee(connection)
 }
 
 module.exports = Epicor

@@ -26,12 +26,6 @@ Access methods on individual services.  Services have a set of common methods as
 const myCustomers = connection.Customers.find('CustNum > \'123\'')
 ```
 
-It is possible to pass an adapter function that will be used to wrap each service:
-
-```
-const connection = new Epicor({...}, service => extendService(service))
-```
-
 ## Common methods on services
 
  * create(record): create a record, populating default values where not supplied.  Returns a promise that will resolve to the created record.
