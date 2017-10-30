@@ -23,6 +23,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.Supplier = new Supplier(connection)
   this.Terms = new ServiceBase(connection, 'Erp.BO.TermsSvc', 'Terms', 'TermsCode')
   this.Employee = new Employee(connection)
+  this.Project = new ServiceBase(connection, 'Erp.BO.ProjectSvc', 'Project', )
   this.UserFile = new UserFile(connection)
 }
 
