@@ -8,6 +8,7 @@ const Customer = require('./lib/customer'),
   Jobs = require('./lib/jobs'),
   JobOperations = require('./lib/jobOperations'),
   ServiceBase = require('./lib/serviceBase'),
+  Labor = require('./lib/labor'),
   Connection = require('./lib/connection')
 
 const identity = x => x
@@ -29,6 +30,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.UserFile = new UserFile(connection)
   this.JobOperations = new JobOperations(connection)
   this.Jobs = new Jobs(connection)
+  this.Labor = new Labor(connection)
 }
 
 module.exports = Epicor
