@@ -1,6 +1,6 @@
 {
   "name": "epicor-erp-api",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,9 @@
   },
   "dependencies": {
     "debug": "^2.6.9",
+    "moment": "^2.19.2",
     "request": "^2.81.0",
-    "request-promise-native": "^1.0.4"
+    "request-promise-native": "^1.0.4",
+    "simpl-schema": "^0.5.0"
   }
 }
