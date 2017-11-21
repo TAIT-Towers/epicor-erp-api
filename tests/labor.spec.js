@@ -27,4 +27,14 @@ describe('Labor Service', () => {
       })
     })
   })
+
+  describe('updateLaborDetail', () => {
+    it('calls GetByID and recalculate the totals', () => {
+
+    })
+
+    it('updates custom laborhed data by creating new record', () => {
+
+    })
+  })
 })
