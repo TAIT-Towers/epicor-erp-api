@@ -19,6 +19,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.getConnection = () => connection
   this.Currency = new Currency(connection)
   this.Customer = new Customer(connection)
+  this.Indirect = new ServiceBase(connection, 'Erp.BO.IndirectSvc', 'Indirect', 'IndirectCode')
   this.PerCon = new ServiceBase(connection, 'Erp.BO.PerConSvc', 'PerCon', 'PerConID')
   this.ResourceGroup = new ResourceGroup(connection)
   this.SalesTerritory = new SalesTerritory(connection)
