@@ -28,7 +28,7 @@ describe('Labor Service', () => {
     })
   })
 
-  describe('updateLaborDetail', () => {
+  describe('updateLaborEntry', () => {
     it('calls GetByID and recalculate the totals', () => {
 
     })

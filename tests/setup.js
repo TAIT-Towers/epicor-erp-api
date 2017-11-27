@@ -8,4 +8,4 @@ chai.should()
 global.should = chai.should
 global.expect = chai.expect
 global.sinon = sinon
-dotenv.configure()
+dotenv.config()
