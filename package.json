@@ -1,6 +1,6 @@
 {
   "name": "epicor-erp-api",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
@@ -18,9 +18,11 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.0.2",
+    "chai-as-promised": "^7.1.1",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
     "eslint-config-f1": "^1.0.1",
+    "immutability-helper": "^2.5.1",
     "mocha": "^3.4.2",
     "sinon": "^2.3.5",
     "sinon-chai": "^2.11.0"
