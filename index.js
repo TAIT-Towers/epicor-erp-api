@@ -9,6 +9,7 @@ const Customer = require('./lib/customer'),
   JobOperations = require('./lib/jobOperations'),
   ServiceBase = require('./lib/serviceBase'),
   Labor = require('./lib/labor'),
+  SalesOrder = require('./lib/salesOrder'),
   BAQ = require('./lib/baq'),
   Connection = require('./lib/connection')
 
@@ -29,11 +30,13 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.Terms = new ServiceBase(connection, 'Erp.BO.TermsSvc', 'Terms', 'TermsCode')
   this.Employee = new Employee(connection)
   this.Project = new ServiceBase(connection, 'Erp.BO.ProjectSvc', 'Project', )
+  this.SalesOrder = new SalesOrder(connection)
   this.UserFile = new UserFile(connection)
   this.JobOperations = new JobOperations(connection)
   this.Jobs = new Jobs(connection)
   this.Labor = new Labor(connection)
   this.BAQ = new BAQ(connection)
+  this.Company = new ServiceBase(connection, 'Erp.BO.CompanySvc', 'Company', 'Company')
 }
 
 module.exports = Epicor
