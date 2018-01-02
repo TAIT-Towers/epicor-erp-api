@@ -4,6 +4,7 @@ const connection = require('./sample-connection')
 
 const sampleCustomer = {
   CustID: '556',
+  Company: '150',
   Name: 'Customer Test Five'
 }
 
