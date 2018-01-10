@@ -1,6 +1,6 @@
 {
   "name": "epicor-erp-api",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
@@ -17,22 +17,22 @@
   "author": "Nicolas Galler",
   "license": "ISC",
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
     "eslint-config-f1": "^1.0.1",
-    "immutability-helper": "^2.5.1",
-    "mocha": "^3.4.2",
-    "sinon": "^2.3.5",
-    "sinon-chai": "^2.11.0"
+    "immutability-helper": "^2.6.4",
+    "mocha": "^3.5.3",
+    "sinon": "^2.4.1",
+    "sinon-chai": "^2.14.0"
   },
   "dependencies": {
     "debug": "^2.6.9",
-    "moment": "^2.19.2",
+    "moment": "^2.20.1",
     "ramda": "^0.25.0",
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.4",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "simpl-schema": "^0.5.0"
   }
 }
