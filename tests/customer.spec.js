@@ -62,7 +62,7 @@ describe('Customer Service', () => {
   })
 
   describe('update', () => {
-    it('calls Update, without passing SysRevID', () => {
+    it('calls Update, passing SysRevID', () => {
       const r = sinon.stub()
         .returns(Promise.resolve({
           parameters: {
@@ -74,7 +74,7 @@ describe('Customer Service', () => {
       connection.makeRequest = r
       return customerSvc.update({Something: '123', SysRevID: 123}).then(result => {
         expect(r).to.have.been.calledWith('Erp.Bo.CustomerSvc', 'Update', {ds: {Customer: [{
-          Something: '123', RowMod: 'U'
+          Something: '123', RowMod: 'U', SysRevID: 123
         }]}})
         expect(result).to.eql({Something: '123', SysRevID: 555})
       })
