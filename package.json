@@ -1,6 +1,6 @@
 {
   "name": "epicor-erp-api",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/nicocrm/epicor-erp-api"
   },
-  "keywords": [
-    "epicor"
-  ],
+  "keywords": ["epicor"],
   "author": "Nicolas Galler",
   "license": "ISC",
   "devDependencies": {
