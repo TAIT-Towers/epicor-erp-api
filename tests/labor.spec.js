@@ -42,9 +42,10 @@ describe('Labor Service', () => {
 
   describe('submitTimesheet', () => {
     it('validates that no day has more than 24h clocked', () => {
-      const r = sinon.stub()
+      const r = sinon.stub();
+
       r.withArgs('GetRows', sinon.match.any)
-        .returns(Promise.resolve(update(sampleDataset, {
+        .returns(Promise.resolve(update(sampleDataset(), {
           returnObj: {
             LaborDtl: {
               1: {
@@ -54,16 +55,51 @@ describe('Labor Service', () => {
               }
             }
           }
-        })))
-      laborSvc.makeRequest = r
-      return laborSvc.submitTimesheet({
-        FromDate: '2017-11-27', ToDate: '2017-11-28', EmployeeNum: 'TS'
-      }).should.be.rejectedWith(/You may only clock 24 hours/)
+        })));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc.submitTimesheet(
+        {
+          FromDate: '2017-11-27',
+          ToDate: '2017-11-28',
+          EmployeeNum: 'TS'
+        },
+        ['2017-11-27', '2017-11-28']
+      ).should.be.rejectedWith(/You may only clock 24 hours/)
+    })
+
+    it('only submits the dates that have been supplied by the user', () => {
+      const r = sinon.stub();
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+      debugger
+      r.withArgs('GetRows', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('SubmitForApproval', sinon.match.any)
+        .returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc.submitTimesheet(
+        {
+          FromDate: '2017-11-27',
+          ToDate: '2017-11-28',
+          EmployeeNum: 'TS'
+        },
+        ['2017-11-27']
+      ).then(result => {
+        expect(result.LaborDtl[1].EnableSubmit).to.not.be.true;
+        expect(result.LaborDtl[1].TimeAutoSubmit).to.not.be.true;
+        expect(result.LaborDtl[1].RowMod).to.not.eq('U');
+      });
     })
   })
 })
 
-const sampleDataset = {
+const sampleDataset = () => ({
   "returnObj": {
     "LaborHed": [
       {
@@ -421,7 +457,7 @@ const sampleDataset = {
         "RefOprSeq": 0,
         "Imported": false,
         "ImportDate": null,
-        "TimeAutoSubmit": true,
+        "TimeAutoSubmit": false,
         "BatchMode": false,
         "BillServiceRate": 0,
         "HCMPayHours": 0,
@@ -465,7 +501,7 @@ const sampleDataset = {
         "EnableResourceGrpID": false,
         "EnableScrapQty": true,
         "EnableSN": false,
-        "EnableSubmit": true,
+        "EnableSubmit": false,
         "EndActivity": false,
         "EnteredOnCurPlant": true,
         "FSComplete": false,
@@ -581,7 +617,7 @@ const sampleDataset = {
         "AppliedToSchedule": false,
         "ClockInMInute": 33702240,
         "ClockOutMinute": 33702780,
-        "ClockInDate": "2017-11-27T00:00:00",
+        "ClockInDate": "2017-11-28T00:00:00",
         "ClockinTime": 8,
         "ClockOutTime": 17,
         "ActiveTrans": false,
@@ -594,7 +630,7 @@ const sampleDataset = {
         "OpComplete": false,
         "EarnedHrs": 0,
         "AddedOper": false,
-        "PayrollDate": "2017-11-27T00:00:00",
+        "PayrollDate": "2017-11-28T00:00:00",
         "PostedToGL": false,
         "FiscalYear": 0,
         "FiscalPeriod": 0,
@@ -628,10 +664,10 @@ const sampleDataset = {
         "QuickEntryCode": "",
         "TimeStatus": "E",
         "CreatedBy": "Timesheet",
-        "CreateDate": "2017-11-28T00:00:00",
+        "CreateDate": "2017-11-29T00:00:00",
         "CreateTime": 59004,
         "ChangedBy": "Timesheet",
-        "ChangeDate": "2017-11-28T00:00:00",
+        "ChangeDate": "2017-11-29T00:00:00",
         "ChangeTime": 59004,
         "ActiveTaskID": "",
         "LastTaskID": "",
@@ -724,7 +760,7 @@ const sampleDataset = {
         "EnableResourceGrpID": false,
         "EnableScrapQty": true,
         "EnableSN": false,
-        "EnableSubmit": true,
+        "EnableSubmit": false,
         "EndActivity": false,
         "EnteredOnCurPlant": true,
         "FSComplete": false,
@@ -826,4 +862,4 @@ const sampleDataset = {
   "parameters": {
     "morePages": false
   }
-}
+});
