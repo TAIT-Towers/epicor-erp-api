@@ -11,7 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/nicocrm/epicor-erp-api"
   },
-  "keywords": ["epicor"],
+  "keywords": [
+    "epicor"
+  ],
   "author": "Nicolas Galler",
   "license": "ISC",
   "devDependencies": {
