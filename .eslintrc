@@ -2,6 +2,7 @@
   "extends": "f1",
   "rules": {
     "no-trailing-spaces": "off",
+    "indent": "off",
     "eol-last": "off"
   }
 }

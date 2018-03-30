@@ -1,0 +1,4 @@
+# vi: ft=yaml
+singleQuote: true
+bracketSpacing: false
+jsxBracketSameLine: true

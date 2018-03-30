@@ -15,9 +15,7 @@ const Customer = require('./lib/customer'),
   BAQ = require('./lib/baq'),
   Connection = require('./lib/connection');
 
-const identity = x => x;
-
-function Epicor({ serverUrl, username, password, company, strictSSL }) {
+function Epicor({serverUrl, username, password, company, strictSSL}) {
   const connection = new Connection({
     serverUrl,
     username,
