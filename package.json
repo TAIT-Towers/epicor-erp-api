@@ -10,12 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicocrm/epicor-erp-api"
+    "url": "git+https://github.com/bedrockportal/epicor-erp-api"
   },
   "keywords": [
     "epicor"
   ],
-  "author": "Nicolas Galler",
+  "author": "TAIT Towers",
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.1.2",
