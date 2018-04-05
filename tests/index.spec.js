@@ -6,5 +6,6 @@ describe('index', () => {
     expect(connection).to.have.property('Customer');
     expect(connection).to.have.property('SalesTerritory');
     expect(connection).to.have.property('Supplier');
+    expect(connection).to.have.property('LaborApproval');
   });
 });

@@ -10,6 +10,7 @@ const Customer = require('./lib/customer'),
   JobOperations = require('./lib/jobOperations'),
   ServiceBase = require('./lib/serviceBase'),
   Labor = require('./lib/labor'),
+  LaborApproval = require('./lib/laborApproval'),
   SalesOrder = require('./lib/salesOrder'),
   OrderJobWiz = require('./lib/orderJobWiz'),
   BAQ = require('./lib/baq'),
@@ -73,6 +74,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.JobOperations = new JobOperations(connection);
   this.Jobs = new Jobs(connection);
   this.Labor = new Labor(connection);
+  this.LaborApproval = new LaborApproval(connection);
   this.BAQ = new BAQ(connection);
   this.Company = new Company(connection);
 }
