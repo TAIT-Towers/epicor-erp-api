@@ -42,6 +42,381 @@ describe('Labor Service', () => {
     it('updates custom laborhed data by creating new record', () => {});
   });
 
+  describe('updateRow', () => {
+    const rowCriteria = {
+      FromDate: '2017-11-27',
+      ToDate: '2017-11-28',
+      EmployeeNum: 'TS'
+    };
+
+    it('calls DefaultLaborType if the row changes from an operation to an indirect code', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: 'foo',
+          ProjectID: undefined,
+          JobNum: undefined,
+          OprSeq: undefined
+        })
+        .then(result => {
+          expect(r).to.have.been.calledWith('DefaultLaborType', {
+            ds: ds.returnObj,
+            ipLaborType: 'I'
+          });
+        });
+    });
+
+    it('calls DefaultLaborType if the row changes from an indirect code to an operation', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          IndirectCode: 'foo',
+          ProjectID: undefined,
+          JobNum: undefined,
+          OprSeq: undefined
+        })
+      );
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: undefined,
+          OprSeq: 20,
+          ProjectID: 'ICLDEL',
+          JobNum: 'L01094-L25'
+        })
+        .then(result => {
+          expect(r).to.have.been.calledWith('DefaultLaborType', {
+            ds: ds.returnObj,
+            ipLaborType: 'P'
+          });
+        });
+    });
+
+    it('calls DefaultIndirect if the indirect code changes', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          IndirectCode: 'bar',
+          OprSeq: '',
+          ProjectID: '',
+          JobNum: ''
+        })
+      );
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: 'foo',
+          ProjectID: undefined,
+          JobNum: undefined,
+          OprSeq: undefined
+        })
+        .then(result => {
+          expect(r).to.have.been.calledWith('DefaultIndirect', {
+            ds: ds.returnObj,
+            indirectCode: 'foo'
+          });
+          expect(r).to.not.have.been.calledWith(
+            'DefaultProjectID',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultJobNum',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultOprSeq',
+            sinon.match.any
+          );
+        });
+    });
+
+    it('calls DefaultProjectID if the project changes', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          ProjectID: 'LEDLCI',
+          OprSeq: 20,
+          JobNum: 'L01094-L25'
+        })
+      );
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: undefined,
+          OprSeq: 20,
+          ProjectID: 'ICLDEL',
+          JobNum: 'L01094-L25'
+        })
+        .then(result => {
+          expect(r).to.not.have.been.calledWith(
+            'DefaultIndirect',
+            sinon.match.any
+          );
+          expect(r).to.have.been.calledWith('DefaultProjectID', {
+            ds: ds.returnObj,
+            ipProjectID: 'ICLDEL'
+          });
+          expect(r).to.not.have.been.calledWith(
+            'DefaultJobNum',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultOprSeq',
+            sinon.match.any
+          );
+        });
+    });
+
+    it('calls DefaultJobNum if the job changes', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          ProjectID: 'ICLDEL',
+          OprSeq: 20,
+          JobNum: 'L01094-L26'
+        })
+      );
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: undefined,
+          OprSeq: 20,
+          ProjectID: 'ICLDEL',
+          JobNum: 'L01094-L25'
+        })
+        .then(result => {
+          expect(r).to.not.have.been.calledWith(
+            'DefaultIndirect',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultProjectID',
+            sinon.match.any
+          );
+          expect(r).to.have.been.calledWith('DefaultJobNum', {
+            ds: ds.returnObj,
+            jobNum: 'L01094-L25'
+          });
+          expect(r).to.not.have.been.calledWith(
+            'DefaultOprSeq',
+            sinon.match.any
+          );
+        });
+    });
+
+    it('calls DefaultOprSeq if the operation changes', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          ProjectID: 'ICLDEL',
+          OprSeq: 10,
+          JobNum: 'L01094-L25'
+        })
+      );
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: undefined,
+          OprSeq: 20,
+          ProjectID: 'ICLDEL',
+          JobNum: 'L01094-L25'
+        })
+        .then(result => {
+          expect(r).to.not.have.been.calledWith(
+            'DefaultIndirect',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultProjectID',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultJobNum',
+            sinon.match.any
+          );
+          expect(r).to.have.been.calledWith('DefaultOprSeq', {
+            ds: ds.returnObj,
+            oprSeq: 20
+          });
+        });
+    });
+
+    it('calls Update', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          ProjectID: 'ICLDEL',
+          OprSeq: 10,
+          JobNum: 'L01094-L25'
+        })
+      );
+
+      const r = sinon.stub();
+      r.withArgs('GetRows', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: undefined,
+          OprSeq: 10,
+          ProjectID: 'ICLDEL',
+          JobNum: 'L01094-L25'
+        })
+        .then(result => {
+          expect(r).to.not.have.been.calledWith(
+            'DefaultLaborType',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultIndirect',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultProjectID',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultJobNum',
+            sinon.match.any
+          );
+          expect(r).to.not.have.been.calledWith(
+            'DefaultOprSeq',
+            sinon.match.any
+          );
+          expect(r).to.have.been.calledWith('Update', {ds: ds.returnObj});
+        });
+    });
+  });
+
   describe('submitTimesheet', () => {
     it('validates that no day has more than 24h clocked', () => {
       const r = sinon.stub();
@@ -400,7 +775,7 @@ const sampleDataset = () => ({
         FiscalCalendarID: '',
         BFLaborReq: false,
         ABTUID: '',
-        ProjectID: '',
+        ProjectID: 'ICLDEL',
         PhaseID: '',
         RoleCd: '',
         TimeTypCd: '',
@@ -659,7 +1034,7 @@ const sampleDataset = () => ({
         FiscalCalendarID: '',
         BFLaborReq: false,
         ABTUID: '',
-        ProjectID: '',
+        ProjectID: 'ICLDEL',
         PhaseID: '',
         RoleCd: '',
         TimeTypCd: '',
