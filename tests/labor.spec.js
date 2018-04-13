@@ -187,7 +187,7 @@ describe('Labor Service', () => {
         });
     });
 
-    it('calls DefaultProjectID if the project changes', () => {
+    it('calls DefaultProjectID, DefaultJobNum and DefaultOprSeq if the project changes', () => {
       const ds = {...sampleDataset()};
       ds.parameters.ds = ds.returnObj;
 
@@ -232,18 +232,12 @@ describe('Labor Service', () => {
             ds: ds.returnObj,
             ipProjectID: 'ICLDEL'
           });
-          expect(r).to.not.have.been.calledWith(
-            'DefaultJobNum',
-            sinon.match.any
-          );
-          expect(r).to.not.have.been.calledWith(
-            'DefaultOprSeq',
-            sinon.match.any
-          );
+          expect(r).to.have.been.calledWith('DefaultJobNum', sinon.match.any);
+          expect(r).to.have.been.calledWith('DefaultOprSeq', sinon.match.any);
         });
     });
 
-    it('calls DefaultJobNum if the job changes', () => {
+    it('calls DefaultJobNum and DefaultOprSeq if the job changes', () => {
       const ds = {...sampleDataset()};
       ds.parameters.ds = ds.returnObj;
 
@@ -292,10 +286,7 @@ describe('Labor Service', () => {
             ds: ds.returnObj,
             jobNum: 'L01094-L25'
           });
-          expect(r).to.not.have.been.calledWith(
-            'DefaultOprSeq',
-            sinon.match.any
-          );
+          expect(r).to.have.been.calledWith('DefaultOprSeq', sinon.match.any);
         });
     });
 
