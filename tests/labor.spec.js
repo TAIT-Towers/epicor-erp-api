@@ -346,6 +346,76 @@ describe('Labor Service', () => {
         });
     });
 
+    it('recalls submitted entries and resubmit them', () => {
+      const ds = {...sampleDataset()};
+      ds.parameters.ds = ds.returnObj;
+
+      ds.returnObj.LaborDtl.forEach(ld =>
+        Object.assign(ld, {
+          ProjectID: 'ICLDEL',
+          OprSeq: 10,
+          JobNum: 'L01094-L25'
+        })
+      );
+      const submittedDs = {
+        ...ds,
+        returnObj: {
+          LaborDtl: ds.returnObj.LaborDtl.map(ld => ({
+            ...ld,
+            NotSubmitted: false
+          }))
+        }
+      };
+
+      const r = sinon.stub();
+      r
+        .withArgs('GetRows', sinon.match.any)
+        // return as submitted rows, the first time
+        .onFirstCall()
+        .returns(Promise.resolve(submittedDs))
+        // then unsubmitted
+        .onSecondCall()
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultLaborType', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultIndirect', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('DefaultProjectID', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r.withArgs('DefaultOprSeq', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('DefaultJobNum', sinon.match.any).returns(Promise.resolve(ds));
+      r.withArgs('Update', sinon.match.any).returns(Promise.resolve(ds));
+      r
+        .withArgs('RecallFromApproval', sinon.match.any)
+        .returns(Promise.resolve(ds));
+      r
+        .withArgs('SubmitForApproval', sinon.match.any)
+        .returns(Promise.resolve(ds));
+
+      laborSvc.makeRequest = r;
+
+      return laborSvc
+        .updateRow(rowCriteria, {
+          IndirectCode: undefined,
+          OprSeq: 10,
+          ProjectID: 'ICLDEL',
+          JobNum: 'L01094-L25'
+        })
+        .then(result => {
+          expect(r).to.have.been.calledWith('RecallFromApproval', {
+            ds: submittedDs.returnObj,
+            lWeeklyView: false
+          });
+          expect(r).to.have.been.calledWith('SubmitForApproval', {
+            ds: ds.returnObj,
+            lWeeklyView: false
+          });
+        });
+    });
+
     it('calls Update', () => {
       const ds = {...sampleDataset()};
       ds.parameters.ds = ds.returnObj;
@@ -464,9 +534,7 @@ describe('Labor Service', () => {
           ['2017-11-27']
         )
         .then(result => {
-          expect(result.LaborDtl[1].EnableSubmit).to.not.be.true;
-          expect(result.LaborDtl[1].TimeAutoSubmit).to.not.be.true;
-          expect(result.LaborDtl[1].RowMod).to.not.eq('U');
+          expect(result.LaborDtl).to.have.length(1);
         });
     });
   });
