@@ -4,13 +4,16 @@ const Connection = require('../lib/connection.js'),
   Labor = require('../lib/labor.js');
 
 describe('Labor Service', () => {
-  let connection, laborSvc;
+  let connection, laborSvc, taskSvc;
 
   beforeEach(() => {
     connection = new Connection({
       serverUrl: 'https://nowhere.com'
     });
-    laborSvc = new Labor(connection);
+    taskSvc = {
+      updateKey1: sinon.stub()
+    };
+    laborSvc = new Labor(connection, taskSvc);
   });
 
   describe('find', () => {
@@ -39,7 +42,52 @@ describe('Labor Service', () => {
   describe('updateLaborEntry', () => {
     it('calls GetByID and recalculate the totals', () => {});
 
-    it('updates custom laborhed data by creating new record', () => {});
+    it('updates custom laborhed data by creating new record', async () => {
+      laborSvc.makeRequest = sinon.stub();
+      laborSvc.makeRequest.resolves({
+        parameters: {
+          ds: {}
+        }
+      });
+      laborSvc.makeRequest.withArgs('GetByID', {laborHedSeq: 1}).resolves({
+        returnObj: {
+          LaborHed: [
+            {
+              LaborHedSeq: 1,
+              Character02: 'REG'
+            }
+          ],
+          LaborDtl: [
+            {
+              LaborDtlSeq: 2,
+              LaborHedSeq: 1
+            }
+          ]
+        }
+      });
+      laborSvc._findOrCreateLaborHed = sinon.stub().resolves({
+        LaborHed: [
+          {
+            LaborHedSeq: 3
+          }
+        ],
+        LaborDtl: []
+      });
+      laborSvc._recalculateLaborHedTotals = sinon.stub();
+
+      await laborSvc.updateLaborEntry(
+        {
+          LaborHedSeq: 1,
+          LaborDtlSeq: 2
+        },
+        {
+          Character02: 'RP'
+        }
+      );
+
+      laborSvc._recalculateLaborHedTotals.should.have.been.calledWith(1, true);
+      taskSvc.updateKey1.should.have.been.calledWith(1, 2, 'LaborDtl', 3);
+    });
   });
 
   describe('updateRow', () => {
