@@ -29,7 +29,7 @@ describe('Labor Approval Service', () => {
             ToDate: '2017-11-28',
             EmployeeNum: 'TS'
           },
-          {EmployeeNum: 'approver', EmployeeName: 'approver'},
+          {EmployeeNum: 'approver', Name: 'approver'},
           ['2017-11-27']
         )
         .then(result => {
