@@ -60,7 +60,8 @@ describe('Labor Service', () => {
           LaborDtl: [
             {
               LaborDtlSeq: 2,
-              LaborHedSeq: 1
+              LaborHedSeq: 1,
+              NotSubmitted: true
             }
           ]
         }
