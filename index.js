@@ -78,7 +78,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.JobOperations = new JobOperations(connection);
   this.Jobs = new Jobs(connection);
   this.Task = new Task(connection);
-  this.Labor = new Labor(connection, this.Task);
+  this.Labor = new Labor(connection);
   this.LaborApproval = new LaborApproval(connection);
   this.BAQ = new BAQ(connection);
   this.Company = new Company(connection);
