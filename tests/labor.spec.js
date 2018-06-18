@@ -42,7 +42,7 @@ describe('Labor Service', () => {
   describe('updateLaborEntry', () => {
     it('calls GetByID and recalculate the totals', () => {});
 
-    it('updates custom laborhed data by creating new record', async () => {
+    it('updates custom laborhed data by creating new record, deleting old one', async () => {
       laborSvc.makeRequest = sinon.stub();
       laborSvc.makeRequest.resolves({
         parameters: {
@@ -60,7 +60,9 @@ describe('Labor Service', () => {
           LaborDtl: [
             {
               LaborDtlSeq: 2,
-              LaborHedSeq: 1
+              LaborHedSeq: 1,
+              LaborHrs: 2,
+              NotSubmitted: true
             }
           ]
         }
@@ -86,7 +88,27 @@ describe('Labor Service', () => {
       );
 
       laborSvc._recalculateLaborHedTotals.should.have.been.calledWith(1, true);
-      taskSvc.updateKey1.should.have.been.calledWith(1, 2, 'LaborDtl', 3);
+      laborSvc.makeRequest.should.have.been.calledWith('Update', {
+        ds: {
+          LaborHed: [{LaborHedSeq: 3, PayHours: 2, RowMod: 'U'}],
+          LaborDtl: [
+            {
+              LaborHedSeq: 1,
+              LaborDtlSeq: 2,
+              NotSubmitted: true,
+              LaborHrs: 2,
+              RowMod: 'D'
+            },
+            {
+              LaborHedSeq: 3,
+              LaborDtlSeq: 0,
+              NotSubmitted: true,
+              LaborHrs: 2,
+              RowMod: 'A'
+            }
+          ]
+        }
+      });
     });
   });
 
