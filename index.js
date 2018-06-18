@@ -30,6 +30,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.setConnectionCompany = company => {
     connection.company = company;
   };
+  this.getConnectionCompany = () => connection.company;
   this.Currency = new Currency(connection);
   this.Customer = new Customer(connection);
   this.Indirect = new ServiceBase(
