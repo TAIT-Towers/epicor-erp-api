@@ -15,7 +15,8 @@ const Customer = require('./lib/customer'),
   Task = require('./lib/task'),
   OrderJobWiz = require('./lib/orderJobWiz'),
   BAQ = require('./lib/baq'),
-  Connection = require('./lib/connection');
+  Connection = require('./lib/connection'),
+  PurchaseOrder = require('./lib/purchaseOrder');
 
 function Epicor({serverUrl, username, password, company, strictSSL}) {
   const connection = new Connection({
@@ -83,6 +84,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.LaborApproval = new LaborApproval(connection);
   this.BAQ = new BAQ(connection);
   this.Company = new Company(connection);
+  this.PurchaseOrder = new PurchaseOrder(connection);
 }
 
 module.exports = Epicor;
