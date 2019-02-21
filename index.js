@@ -17,9 +17,16 @@ const Customer = require('./lib/customer'),
   BAQ = require('./lib/baq'),
   Connection = require('./lib/connection'),
   PurchaseOrder = require('./lib/purchaseOrder'),
-  DynamicQuery = require('./lib/dynamicQuery');
+  DynamicQuery = require('./lib/dynamicQuery'),
+  Project = require('./lib/project');
 
-function Epicor({serverUrl, username, password, company, strictSSL}) {
+function Epicor({
+  serverUrl,
+  username,
+  password,
+  company,
+  strictSSL
+}) {
   const connection = new Connection({
     serverUrl,
     username,
@@ -69,12 +76,6 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
     'TermsCode'
   );
   this.Employee = new Employee(connection);
-  this.Project = new ServiceBase(
-    connection,
-    'Erp.BO.ProjectSvc',
-    'Project',
-    'ProjectID'
-  );
   this.SalesOrder = new SalesOrder(connection);
   this.OrderJobWiz = new OrderJobWiz(connection);
   this.UserFile = new UserFile(connection);
@@ -87,6 +88,7 @@ function Epicor({serverUrl, username, password, company, strictSSL}) {
   this.Company = new Company(connection);
   this.PurchaseOrder = new PurchaseOrder(connection);
   this.DynamicQuery = new DynamicQuery(connection);
+  this.Project = new Project(connection);
 }
 
 module.exports = Epicor;
