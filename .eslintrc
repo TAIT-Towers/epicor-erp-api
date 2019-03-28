@@ -3,6 +3,7 @@
   "rules": {
     "no-trailing-spaces": "off",
     "indent": "off",
-    "eol-last": "off"
+    "eol-last": "off",
+    "object-curly-spacing": "off"
   }
 }
