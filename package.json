@@ -1,10 +1,10 @@
 {
   "name": "epicor-erp-api",
-  "version": "2.9.8",
+  "version": "2.9.9",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
-    "precommit": "npm run lint && npm test && lint-staged",
+    "precommit": "npm test && lint-staged",
     "lint": "eslint --ext .js .",
     "test": "mocha --harmony tests -r ./tests/setup.js --recursive"
   },
