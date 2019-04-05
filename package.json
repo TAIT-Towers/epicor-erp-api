@@ -1,6 +1,6 @@
 {
   "name": "epicor-erp-api",
-  "version": "2.9.9",
+  "version": "2.9.10",
   "description": "Epicor API Wrapper",
   "main": "index.js",
   "scripts": {
