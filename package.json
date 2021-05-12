@@ -40,7 +40,7 @@
     "ramda": "^0.25.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "simpl-schema": "^0.5.0"
+    "simpl-schema": "^1.10.2"
   },
   "lint-staged": {
     "*.{js,scss,md}": [
