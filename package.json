@@ -22,7 +22,7 @@
     "dotenv": "^4.0.0",
     "immutability-helper": "^2.6.6",
     "lint-staged": "^6.1.1",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "prettier": "^1.12.1",
     "sinon": "^2.4.1",
     "sinon-chai": "^2.14.0"
